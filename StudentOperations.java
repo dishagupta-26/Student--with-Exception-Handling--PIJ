@@ -2,6 +2,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StudentOperations {
@@ -18,19 +19,39 @@ public class StudentOperations {
             System.out.println("Enter PRN: ");
             long prn = sc.nextLong();
             sc.nextLine();
+
+            for (Student s : students) {
+                if (s.getPrn() == prn) {
+                    throw new DuplicateStudentException("Student with PRN " + prn + " already exists.");
+                }
+            }
+
             System.out.println("Enter Name: ");
             String name = sc.nextLine();
-            System.out.println("Enter DOB (yyyy-mm-dd): ");
+
+            System.out.println("Enter DOB (dd-MM-yyyy): ");
             String dobStr = sc.nextLine();
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            Date dob = sdf.parse(dobStr); // parse the input string to a date object
-            System.out.println("Enter Marks: ");
-            double marks = sc.nextDouble();
+            Date dob = sdf.parse(dobStr);
+
+            System.out.println("Enter Marks (1.0 to 10.0): ");
+            float marks = sc.nextFloat();
+            sc.nextLine(); // clear buffer
+
+            if (marks < 1.0 || marks > 10.0) {
+                throw new InvalidMarksException("Marks should be in the range 1.0 to 10.0");
+            }
 
             students.add(new Student(prn, name, dob, marks));
             System.out.println("Student added successfully!");
+
+        } catch (DuplicateStudentException | InvalidMarksException e) {
+            System.out.println("Error: " + e.getMessage());
         } catch (ParseException e) {
             System.out.println("Invalid date format! Please use dd-MM-yyyy.");
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input type. Please enter correct data.");
+            sc.nextLine(); // clear buffer
         }
     }
 
@@ -101,7 +122,7 @@ public class StudentOperations {
                 }
 
                 System.out.print("Enter new Marks: ");
-                double marks = sc.nextDouble();
+                float marks = sc.nextFloat();
                 student.setMarks(marks);
 
                 System.out.println("Student updated successfully.");

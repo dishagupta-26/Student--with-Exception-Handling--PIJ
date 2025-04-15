@@ -6,10 +6,10 @@ public class Student {
     private long prn;
     private String name;
     private Date dob;
-    private double marks;
+    private float marks;
 
     // declaring constructors
-    public Student(long prn, String name, Date dob, double marks) {
+    public Student(long prn, String name, Date dob, float marks) {
         this.prn = prn;
         this.name = name;
         this.dob = dob;
@@ -45,7 +45,7 @@ public class Student {
         return marks;
     }
 
-    public void setMarks(double marks) {
+    public void setMarks(float marks) {
         this.marks = marks;
     }
 
