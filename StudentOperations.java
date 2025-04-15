@@ -57,12 +57,20 @@ public class StudentOperations {
 
     // method to display all students
     public void displayStudents() {
-        if (students.isEmpty()) {
-            System.out.println("No students to display!");
-            return;
-        }
-        for (Student student : students) {
-            student.displayStudentDetails();
+        try {
+            if (students.isEmpty()) {
+                throw new EmptyStudentListException("No students to display!");
+            }
+
+            for (Student student : students) {
+                if (student == null) {
+                    throw new DisplayException("Encountered a null student object while displaying.");
+                }
+                student.displayStudentDetails();
+            }
+
+        } catch (EmptyStudentListException | DisplayException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
