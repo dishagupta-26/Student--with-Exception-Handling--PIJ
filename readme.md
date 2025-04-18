@@ -1,6 +1,6 @@
 # Student Management System
 
-This project is a simple Student Management System implemented in Java. It allows users to perform various operations such as adding, viewing, updating, searching, and deleting student records. Each student record includes details like PRN, name, date of birth, and marks.
+This is a Java-based Student Data Entry System that allows adding, updating, deleting, and searching student records. Each function is equipped with custom exception handling to ensure robust performance.
 
 ## Features
 
@@ -10,6 +10,34 @@ This project is a simple Student Management System implemented in Java. It allow
 - **Search Student by PRN**: Find a student using their unique PRN.
 - **Search Student by Name**: Locate students based on their names.
 - **Delete Student**: Remove a student's record from the system.
+
+Absolutely! Here's a detailed list of **Custom Exceptions per Function** for your Student Data Entry project. You can directly paste this into your `README.md` under a section like:
+
+## Custom Exceptions per Function
+
+### **1. Add Student**
+- `DuplicateStudentException` – Thrown when student with the entered PRN already exist.
+- `InvalidMarksException` – Thrown when marks are not in the range of 1.0 to 10.0.
+
+### **2. Display All Students**
+- `EmptyStudentListException` – Thrown when student list is empty.
+- `DisplayException` – Thrown when a null student object is encountered during diplay.
+
+### **3. Search Student by PRN**
+- `InvalidSearchPrnException` – Thrown when PRN input is invalid (not 11 digits).
+- `PrnDoesNotExistException` – Thrown when theentered PRN doesn't exist.
+
+### **4. Search Student by Name**
+- `InvalidNameFormatException` – Thrown when the name is less than or equal to 2 characters.
+- `NameNotFoundException` – Thrown when no student is found with the given name.
+
+### **5. Update Student**
+- `StudentNotFoundForUpdateException` – Thrown when the student with the given PRN is not found.
+- `InvalidUpdateMarksException` – Thrown when new marks are outside the valid range (1.0 to 10.0).
+
+### **6. Delete Student**
+- `InvalidDeletePrnException` – Thrown when the PRN entered for deletion is invalid (not 11 digits).
+- `StudentNotFoundForDeleteException` – Thrown when no student matches the PRN for deletion.
 
 ## Prerequisites
 
