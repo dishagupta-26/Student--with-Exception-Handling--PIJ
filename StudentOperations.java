@@ -132,38 +132,57 @@ public class StudentOperations {
 
     // method to update student details
     public void updateStudent(Scanner sc) {
-        System.out.print("Enter PRN of student to update: ");
-        long prn = sc.nextLong();
-        sc.nextLine();
+        try {
+            System.out.print("Enter PRN of student to update: ");
+            long prn = sc.nextLong();
+            sc.nextLine();
 
-        for (Student student : students) {
-            if (student.getPrn() == prn) {
-                System.out.print("Enter new Name: ");
-                String name = sc.nextLine();
-                student.setName(name);
+            boolean found = false;
 
-                System.out.print("Enter new Date of Birth (yyyy-mm-dd): ");
-                String dobStr = sc.nextLine();
-                if (!dobStr.isEmpty()) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                    try {
-                        Date dob = sdf.parse(dobStr);
-                        student.setDob(dob);
-                    } catch (ParseException e) {
-                        System.out.println("Invalid date format! Please use dd-MM-yyyy.");
-                        return;
+            for (Student student : students) {
+                if (student.getPrn() == prn) {
+                    found = true;
+
+                    System.out.print("Enter new Name: ");
+                    String name = sc.nextLine();
+                    student.setName(name);
+
+                    System.out.print("Enter new Date of Birth (dd-MM-yyyy): ");
+                    String dobStr = sc.nextLine();
+                    if (!dobStr.isEmpty()) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        try {
+                            Date dob = sdf.parse(dobStr);
+                            student.setDob(dob);
+                        } catch (ParseException e) {
+                            System.out.println("Invalid date format! Please use dd-MM-yyyy.");
+                            return;
+                        }
                     }
+
+                    System.out.print("Enter new Marks: ");
+                    float marks = sc.nextFloat();
+                    sc.nextLine(); // Clear buffer
+                    if (marks < 1.0 || marks > 10.0) {
+                        throw new InvalidUpdateMarksException("Marks must be between 1.0 and 10.0.");
+                    }
+
+                    student.setMarks(marks);
+                    System.out.println("Student updated successfully.");
+                    break;
                 }
-
-                System.out.print("Enter new Marks: ");
-                float marks = sc.nextFloat();
-                student.setMarks(marks);
-
-                System.out.println("Student updated successfully.");
-                return;
             }
+
+            if (!found) {
+                throw new StudentNotFoundForUpdateException("No student found with PRN: " + prn);
+            }
+
+        } catch (StudentNotFoundForUpdateException | InvalidUpdateMarksException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter proper data.");
+            sc.nextLine(); // Clear buffer
         }
-        System.out.println("Student with PRN " + prn + " not found.");
     }
 
     // method to delete student
