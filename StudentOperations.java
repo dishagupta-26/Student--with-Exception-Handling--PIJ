@@ -76,17 +76,32 @@ public class StudentOperations {
 
     // method to search student by PRN
     public void searchStudentByPrn(Scanner sc) {
-        System.out.print("Enter PRN to search: ");
-        long prn = sc.nextLong();
+        try {
+            System.out.print("Enter PRN to search: ");
+            long prn = sc.nextLong();
+            sc.nextLine(); // clear buffer
 
-        for (Student student : students) {
-            if (student.getPrn() == prn) {
-                System.out.println("Student found:");
-                student.displayStudentDetails();
-                return;
+            // Validate PRN length
+            if (String.valueOf(prn).length() != 11) {
+                throw new InvalidSearchPrnException("PRN must be exactly 11 digits.");
             }
+
+            for (Student student : students) {
+                if (student.getPrn() == prn) {
+                    System.out.println("Student found:");
+                    student.displayStudentDetails();
+                    return;
+                }
+            }
+
+            throw new PrnDoesNotExistException("No student found with PRN: " + prn);
+
+        } catch (InvalidSearchPrnException | PrnDoesNotExistException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a numeric PRN.");
+            sc.nextLine(); // Clear buffer
         }
-        System.out.println("Student with PRN " + prn + " not found.");
     }
 
     // method to search student by name
