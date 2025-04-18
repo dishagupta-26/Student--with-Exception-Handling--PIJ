@@ -11,8 +11,6 @@ This is a Java-based Student Data Entry System that allows adding, updating, del
 - **Search Student by Name**: Locate students based on their names.
 - **Delete Student**: Remove a student's record from the system.
 
-Absolutely! Here's a detailed list of **Custom Exceptions per Function** for your Student Data Entry project. You can directly paste this into your `README.md` under a section like:
-
 ## Custom Exceptions per Function
 
 ### **1. Add Student**
