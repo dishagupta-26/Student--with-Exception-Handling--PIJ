@@ -187,16 +187,31 @@ public class StudentOperations {
 
     // method to delete student
     public void deleteStudent(Scanner sc) {
-        System.out.print("Enter PRN of student to delete: ");
-        long prn = sc.nextLong();
+        try {
+            System.out.print("Enter PRN of student to delete: ");
+            long prn = sc.nextLong();
+            sc.nextLine(); // clear buffer
 
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getPrn() == prn) {
-                students.remove(i);
-                System.out.println("Student deleted successfully.");
-                return;
+            // Validate PRN length
+            if (String.valueOf(prn).length() != 11) {
+                throw new InvalidDeletePrnException("PRN must be exactly 11 digits.");
             }
+
+            for (int i = 0; i < students.size(); i++) {
+                if (students.get(i).getPrn() == prn) {
+                    students.remove(i);
+                    System.out.println("Student deleted successfully.");
+                    return;
+                }
+            }
+
+            throw new StudentNotFoundForDeleteException("No student found with PRN: " + prn);
+
+        } catch (InvalidDeletePrnException | StudentNotFoundForDeleteException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a numeric PRN.");
+            sc.nextLine(); // clear invalid input
         }
-        System.out.println("Student with PRN " + prn + " not found.");
     }
 }
