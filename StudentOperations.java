@@ -81,7 +81,7 @@ public class StudentOperations {
             long prn = sc.nextLong();
             sc.nextLine(); // clear buffer
 
-            // Validate PRN length
+            // validate PRN length
             if (String.valueOf(prn).length() != 11) {
                 throw new InvalidSearchPrnException("PRN must be exactly 11 digits.");
             }
@@ -106,17 +106,28 @@ public class StudentOperations {
 
     // method to search student by name
     public void searchStudentByName(Scanner sc) {
-        System.out.print("Enter Name to search: ");
-        String name = sc.nextLine();
+        try {
+            System.out.print("Enter Name to search: ");
+            String name = sc.nextLine();
 
-        for (Student student : students) {
-            if (student.getName().equalsIgnoreCase(name)) {
-                System.out.println("Student found:");
-                student.displayStudentDetails();
-                return;
+            // validate name length
+            if (name.length() <= 2) {
+                throw new InvalidNameFormatException("Name must be more than 2 characters.");
             }
+
+            for (Student student : students) {
+                if (student.getName().equalsIgnoreCase(name)) {
+                    System.out.println("Student found:");
+                    student.displayStudentDetails();
+                    return;
+                }
+            }
+
+            throw new NameNotFoundException("No student found with name: " + name);
+
+        } catch (InvalidNameFormatException | NameNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
         }
-        System.out.println("Student with Name " + name + " not found.");
     }
 
     // method to update student details
